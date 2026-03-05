@@ -4,10 +4,11 @@ prefixes:
   edintvehiclepermittype: http://vocab.linkeddata.es/datosabiertos/kos/edint/VehiclePermitType/
   edintvehiclepermitstatus: http://vocab.linkeddata.es/datosabiertos/kos/edint/VehiclePermitStatus/
   edintvehiclepermitperiodicity: http://vocab.linkeddata.es/datosabiertos/kos/edint/VehiclePermitPeriodicity/
+  edintzone: http://vocab.linkeddata.es/datosabiertos/def/commons/zone#
   edintvehicletype: http://vocab.linkeddata.es/datosabiertos/kos/edint/VehicleType/
   edintvehiclepropulsiontype: http://vocab.linkeddata.es/datosabiertos/kos/edint/VehiclePropulsionType/
   edintvehicleenvironmentalbadge: http://vocab.linkeddata.es/datosabiertos/kos/edint/VehicleEnvironmentalBadge/
-  edintzone: http://vocab.linkeddata.es/datosabiertos/def/commons/zone#
+
 sources:
   owner-source: ['dataset_enriquecido.csv~csv']
   permit-source: ['dataset_enriquecido.csv~csv']
@@ -18,13 +19,13 @@ mappings:
   owner:
     sources:
       - owner-source
-    s: http://vocab.linkeddata.es/datosabiertos/recurso/titular/$(company)~iri
+    s: http://vocab.linkeddata.es/datosabiertos/recurso/titular/$(company)
     po:
       - [a, edintveh:Owner]
   permit:
     sources:
       - permit-source
-    s: http://vocab.linkeddata.es/datosabiertos/recurso/autorizacion/$(subtipo_autorizacion)-$(estado)-$(fecha_inicio_periodo)-$(fecha_activacion)-$(fecha_vigencia)-$(distintivo)-$(tipologia_vehiculo)-$(periodicidad)
+    s: http://vocab.linkeddata.es/datosabiertos/recurso/autorizacion/$(id_autorizacion)
     po:
       - [a, edintveh:Permit]
       - [edintveh:authorisesInArea, "http://vocab.linkeddata.es/datosabiertos/recurso/trafico/zona-regulada/$(zona-regulada_id)~iri"] # Check FEMP-trafficControlledZone.yml
@@ -36,12 +37,13 @@ mappings:
       - [edintveh:authorisesVehicle, "http://vocab.linkeddata.es/datosabiertos/transporte/recurso/vehiculo/$(vehiculo_id)~iri"] # check FEMP-vehicle.yml
       - [edintveh:beginningDate,"$(fecha_inicio_periodo)", xsd:date ]
       - [edintveh:activationDate, "$(fecha_activacion)",xsd:date]
+      - [edintveh:endingDate, "$(fecha_vigencia)",xsd:date]
   trafficControlledZone:
     sources:
       - t-controlled-zone-source
     s: http://vocab.linkeddata.es/datosabiertos/recurso/trafico/zona-regulada/$(zona-regulada_id)
     po:
-      - [a, edintzone:TrafficControlledZone]
+      - [a, edintzone:RegulatedZone]
   vehicle:
     sources:
       - vehicle-source
@@ -52,4 +54,4 @@ mappings:
       - [edintveh:vehicleType, "edintvehicletype:$(tipologia_vehiculo)~iri"] # Ambulance, Bus, Truck, Van, etc.
       - [edintveh:propulsionType, "edintvehiclepropulsiontype:$(tipologia_propulsion)~iri"] # ButaneGas, Electric, Diesel, etc.
       - [edintveh:environmentalBadge, "edintvehicleenvironmentalbadge:$(distintivo)~iri"] # ECO, ZeroEmissions, B, C, etc.
-      - [edintveh:licensePlateNumber, "$(vehiculo_id)",xsd:string]
+      - [edintveh:licensePlateNumber, "$(vehiculo_id)",xsd:string] # Datos sintéticos para los ejemplos.
