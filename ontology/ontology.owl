@@ -317,9 +317,7 @@ estraf:Tramo rdf:type owl:Class ;
 
 ###  http://vocab.linkeddata.es/datosabiertos/def/transporte/censovehiculos#Owner
 edintveh:Owner rdf:type owl:Class ;
-               rdfs:subClassOf schema:Organization ,
-                               schema:Person ,
-                               [ rdf:type owl:Class ;
+               rdfs:subClassOf [ rdf:type owl:Class ;
                                  owl:unionOf ( schema:Organization
                                                schema:Person
                                              )
